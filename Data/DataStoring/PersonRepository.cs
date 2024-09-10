@@ -1,8 +1,9 @@
-﻿using ConsoleClient.DataClasses;
+﻿using DavidTielke.PMA.CrossCutting.DataClasses;
+using DavidTielke.PMA.Data.FileStoring;
 
-namespace ConsoleClient;
+namespace DavidTielke.PMA.Data.DataStoring;
 
-class PersonRepository
+public class PersonRepository
 {
     private readonly FileReader _reader;
     private readonly PersonParser _parser;

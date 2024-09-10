@@ -1,4 +1,6 @@
-﻿namespace ConsoleClient;
+﻿using DavidTielke.PMA.Logic.PersonManagement;
+
+namespace ConsoleClient;
 
 class PersonDisplayCommands
 {

@@ -1,8 +1,9 @@
-﻿using ConsoleClient.DataClasses;
+﻿using DavidTielke.PMA.CrossCutting.DataClasses;
+using DavidTielke.PMA.Data.DataStoring;
 
-namespace ConsoleClient;
+namespace DavidTielke.PMA.Logic.PersonManagement;
 
-class PersonManager
+public class PersonManager
 {
     private readonly PersonRepository _repository;
 
@@ -19,10 +20,5 @@ class PersonManager
     public IQueryable<Person> GetAllChildren()
     {
         return _repository.LoadAll().Where(p => p.Age < 18);
-    }
-
-    public Person Copy(Person person)
-    {
-        return person;
     }
 }
