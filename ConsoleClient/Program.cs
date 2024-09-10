@@ -1,4 +1,5 @@
 ﻿using System.Reflection.PortableExecutable;
+using ConsoleClient.DataClasses;
 
 namespace ConsoleClient
 {
@@ -6,6 +7,8 @@ namespace ConsoleClient
     {
         static void Main(string[] args)
         {
+            var utils = new PersonUtils();
+
             var commands = new PersonDisplayCommands();
 
             commands.DisplayAllAdults();

@@ -1,4 +1,4 @@
-﻿namespace ConsoleClient;
+﻿namespace ConsoleClient.DataClasses;
 
 class Person
 {
@@ -8,7 +8,7 @@ class Person
 
     public Person()
     {
-            
+
     }
 
     public Person(int id, string name, int age)

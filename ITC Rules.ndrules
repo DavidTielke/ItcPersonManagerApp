@@ -1,2 +1,75 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Queries />
+<Queries>
+  <Group Name="SRP Verletzungen" Active="True" ShownInReport="False">
+    <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Klassen mit mehr als 220 LOC</Name>
+//<Id>IC0201</Id>
+warnif count > 0 
+from t in JustMyCode.Types
+where t.NbLinesOfCode > 2 || t.NbMethods > 10
+select new { t, t.NbLinesOfCode , t.Methods}]]></Query>
+    <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Methoden mit pot. SRP Verletzungen</Name>
+//<Id>IC0201</Id>
+warnif count > 0 
+
+let trueMethods = JustMyCode.Methods.Where(m => !m.IsConstructor && !m.IsStatic && !m.IsPropertyGetter && !m.IsPropertySetter)
+
+from m in trueMethods
+
+
+where m.NbLinesOfCode > 2 || m.CyclomaticComplexity > 1
+select new { m, m.ParentType, m.NbLinesOfCode, m.CyclomaticComplexity }
+]]></Query>
+  </Group>
+  <Group Name="Namensmuster" Active="True" ShownInReport="False">
+    <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Klassen ohne Namensmuster</Name>
+// <Id>IC0201</Id>
+warnif count > 0 
+
+let classBlacklist = new string[]{"Program"}
+let namePatterns = new string[]
+{
+   "Manager",
+   "Repository",
+   "Parser",
+   "Reader",
+   "Commands",
+   "Writer",
+   "Serializer",
+   "Sender",
+   "Workflows",
+   "Controller"
+}
+
+let managementClasses = JustMyCode.Types.Where(t => !t.ParentNamespace.NameLike("DataClasses") 
+                                                    && !classBlacklist.Contains(t.SimpleName) 
+                                                    && !t.IsGeneratedByCompiler)
+
+from t in managementClasses
+
+where !namePatterns.Any(np => t.SimpleName.EndsWith(np))
+
+select new { t, t.Methods, Debt = 20.ToMinutes().ToDebt() }
+]]></Query>
+    <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>[RC0202] Namensmuster Manager wird eingehalten</Name>
+// <Id>IC0201</Id>
+warnif count > 0
+ 
+let namePattern = "Manager"
+let allowedMethods = new []{"Add","Update","Remove"}
+let allowedPrefixes = new[]{"Get","Is","Are"}
+ 
+ 
+let managementClasses = JustMyCode.Types.Where(t => !t.ParentNamespace.NameLike("DataClasses") && !t.IsGeneratedByCompiler)
+ 
+from t in managementClasses.Where(t1 => t1.Name.EndsWith(namePattern))
+ 
+let trueMethods = t.Methods.Where(m => !m.IsGeneratedByCompiler && !m.IsPropertyGetter && !m.IsPropertySetter && !m.IsConstructor)
+ 
+let forbiddenMethods = trueMethods.Where(m => !allowedMethods.Any(m1 => m.SimpleName == m1) 
+&& allowedPrefixes.All(mp => !m.SimpleName.StartsWith(mp)))
+where forbiddenMethods.Any()
+ 
+select new { t, forbiddenMethods }
+]]></Query>
+  </Group>
+</Queries>
