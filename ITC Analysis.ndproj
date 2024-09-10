@@ -55,7 +55,6 @@
   <PathVariables />
   <RuleFiles>
     <RuleFile Active="True" Path=".\ITC Rules.ndrules" />
-    <RuleFile Active="True" Path="..\..\RV24 WS Architektur\PersonManagerApp\RV24 Rules.ndrules" />
   </RuleFiles>
   <GraphFiles />
   <ProjectRules AreActive="False" QueryPersistenceKind="PersistOnlyQueryIdForUntouchedQueries" />
