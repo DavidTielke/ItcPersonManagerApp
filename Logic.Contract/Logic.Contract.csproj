@@ -4,13 +4,18 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	  <RootNamespace>DavidTielke.PMA.Data</RootNamespace>
+	  <RootNamespace>DavidTielke.PMA.Logic.Contract</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CrossCutting.Contract\CrossCutting.Contract.csproj" />
     <ProjectReference Include="..\CrossCutting\CrossCutting.csproj" />
-    <ProjectReference Include="..\Data.Contract\Data.Contract.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="PersonManagement\Callbacks\" />
+    <Folder Include="PersonManagement\DataClasses\" />
+    <Folder Include="PersonManagement\Exceptions\" />
   </ItemGroup>
 
 </Project>

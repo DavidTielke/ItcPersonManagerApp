@@ -1,4 +1,4 @@
-﻿namespace DavidTielke.PMA.CrossCutting.DataClasses;
+﻿namespace CrossCutting.Contract.DataClasses;
 
 public class Person
 {

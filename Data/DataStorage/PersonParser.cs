@@ -1,11 +1,13 @@
-﻿using DavidTielke.PMA.CrossCutting.DataClasses;
+﻿using CrossCutting.Contract.DataClasses;
+using DavidTielke.PMA.Data.Contract.DataStorage;
 
-namespace DavidTielke.PMA.Data.DataStoring;
+namespace DavidTielke.PMA.Data.DataStorage;
 
-public class PersonParser
+public class PersonParser : IPersonParser
 {
     public Person ParseFromCsv(string dataLine)
     {
+
         var parts = dataLine.Split(",");
         var person = new Person
         {

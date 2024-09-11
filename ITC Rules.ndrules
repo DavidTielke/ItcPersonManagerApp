@@ -20,7 +20,7 @@ where m.NbLinesOfCode > 2 || m.CyclomaticComplexity > 1
 select new { m, m.ParentType, m.NbLinesOfCode, m.CyclomaticComplexity }
 ]]></Query>
   </Group>
-  <Group Name="Namensmuster" Active="True" ShownInReport="False">
+  <Group Name="Namensmuster Klassen" Active="True" ShownInReport="False">
     <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>[RC0201] Klassen ohne Namensmuster</Name>
 warnif count > 0 
 
@@ -236,6 +236,80 @@ where forbiddenMethods.Any()
 select new { t, forbiddenMethods }
 
 
+
+]]></Query>
+  </Group>
+  <Group Name="Namensmuster Komponenten" Active="True" ShownInReport="False">
+    <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Komponenten ohne Namensmuster</Name>
+warnif count > 0 
+
+let namepatterns = new string[]{
+   "Client",
+   "Management",
+   "Storage",
+   "DataClasses"
+}
+
+from cns in JustMyCode.Assemblies.SelectMany(a1 => a1.ChildNamespaces)
+
+where !namepatterns.Any(np => cns.SimpleName.EndsWith(np))
+
+select new { cns.ParentAssembly, cns.SimpleName}
+]]></Query>
+    <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Namensmuster Management wird eingehalten</Name>
+warnif count > 0 
+
+let namepattern = "Management"
+let allowedClassPatterns = new string[]{"Manager"}
+
+let components = JustMyCode.Assemblies.SelectMany(a =>a.ChildNamespaces).Where(c => c.SimpleName.EndsWith(namepattern))
+
+from c in components
+
+let forbiddenClasses = c
+                        .ChildTypes
+                        .Where(ct => allowedClassPatterns.All(acp => !ct.SimpleName.EndsWith(acp)))
+                        .Where(ct => !ct.IsGeneratedByCompiler)
+
+where forbiddenClasses.Any()
+
+select new{c.ParentAssembly, c.SimpleName, forbiddenClasses}]]></Query>
+    <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Namensmuster Storage wird eingehalten</Name>
+warnif count > 0 
+
+let namepattern = "Storage"
+let allowedClassPatterns = new string[]{"Repository","Parser","Reader"}
+
+let components = JustMyCode.Assemblies.SelectMany(a =>a.ChildNamespaces).Where(c => c.SimpleName.EndsWith(namepattern))
+
+from c in components
+
+let forbiddenClasses = c
+                        .ChildTypes
+                        .Where(ct => allowedClassPatterns.All(acp => !ct.SimpleName.EndsWith(acp)))
+                        .Where(ct => !ct.IsGeneratedByCompiler)
+
+where forbiddenClasses.Any()
+
+select new{c.ParentAssembly, c.SimpleName, forbiddenClasses}]]></Query>
+    <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Namensmuster Client wird eingehalten</Name>
+warnif count > 0 
+
+let namepattern = "Client"
+let allowedClassPatterns = new string[]{"Program","DisplayCommands"}
+
+let components = JustMyCode.Assemblies.SelectMany(a =>a.ChildNamespaces).Where(c => c.SimpleName.EndsWith(namepattern))
+
+from c in components
+
+let forbiddenClasses = c
+                        .ChildTypes
+                        .Where(ct => allowedClassPatterns.All(acp => !ct.SimpleName.EndsWith(acp)))
+                        .Where(ct => !ct.IsGeneratedByCompiler)
+
+where forbiddenClasses.Any()
+
+select new{c.ParentAssembly, c.SimpleName, forbiddenClasses}
 
 ]]></Query>
   </Group>
